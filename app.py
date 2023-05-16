@@ -23,8 +23,8 @@ def communicate():
         stream=True  # ストリーミングオプションを有効にする
     )
 
-    while not response["choices"]:
-        response = openai.ChatCompletion.fetch(response["id"])
+    while len(response["choices"]) == 0:
+        response = openai.ChatCompletion.fetch(model="gpt-3.5-turbo", response["id"])
 
     bot_message = response["choices"][0]["message"]["content"]
     messages.append({"role": "assistant", "content": bot_message})
