@@ -2,7 +2,7 @@ import streamlit as st
 import openai
 
 # Streamlit Community Cloudの「Secrets」からOpenAI API keyを取得
-openai.api_key = st.secrets.OpenAIAPI.openai_api_key
+openai.api_key = st.secrets["OpenAIAPI"]["openai_api_key"]
 
 # st.session_stateを使いメッセージのやりとりを保存
 if "messages" not in st.session_state:
@@ -24,7 +24,7 @@ def communicate():
     )
 
     while not response["choices"]:
-        response = openai.ChatCompletion.fetch(response["id"], model="gpt-3.5-turbo")
+        response = openai.ChatCompletion.fetch(response["id"])
 
     bot_message = response["choices"][0]["message"]["content"]
     messages.append({"role": "assistant", "content": bot_message})
