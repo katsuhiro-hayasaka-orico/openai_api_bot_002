@@ -23,15 +23,15 @@ def communicate():
         stream=True  # ストリーミングオプションを有効にする
     )
 
-    for event in response:
-        if event['type'] == 'message':
-            bot_message = event['message']['content']
+    for event in response.iter_asynchronous():
+        if "message" in event and "content" in event["message"]:
+            bot_message = event["message"]["content"]
             messages.append({"role": "assistant", "content": bot_message})
             st.write("🤖: " + bot_message)
 
     st.session_state["user_input"] = ""  # 入力欄を消去
 
-# ユーザーインターフェイスの構築
+# ユーザーインターフェースの構築
 st.title("My AI Assistant")
 st.write("ChatGPT APIを使ったチャットボットです。")
 
