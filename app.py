@@ -23,11 +23,12 @@ def communicate():
         stream=True  # ストリーミングオプションを有効にする
     )
 
-    for event in response.iter_asynchronous():
-        if "message" in event and "content" in event["message"]:
-            bot_message = event["message"]["content"]
-            messages.append({"role": "assistant", "content": bot_message})
-            st.write("🤖: " + bot_message)
+    while not response["choices"]:
+        response = openai.ChatCompletion.fetch(model="gpt-3.5-turbo", response["id"])
+
+    bot_message = response["choices"][0]["message"]["content"]
+    messages.append({"role": "assistant", "content": bot_message})
+    st.write("🤖: " + bot_message)
 
     st.session_state["user_input"] = ""  # 入力欄を消去
 
