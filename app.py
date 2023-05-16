@@ -23,8 +23,8 @@ def communicate():
         stream=True  # ストリーミングオプションを有効にする
     )
 
-    for event in response["events"]:
-        if event["event_type"] == "message":
+    for event in response:
+        if event["type"] == "message":
             bot_message = event["message"]["content"]
             messages.append({"role": "assistant", "content": bot_message})
             st.write("🤖: " + bot_message)
