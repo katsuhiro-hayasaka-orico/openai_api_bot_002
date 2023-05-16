@@ -23,12 +23,14 @@ def communicate():
         stream=True  # ストリーミングオプションを有効にする
     )
 
-    while len(response["choices"]) == 0:
-        response = openai.ChatCompletion.fetch(response["id"])
+    for event in response:
+        if event["type"] == "message":
+            bot_message = event["message"]["content"]
+            messages.append({"role": "assistant", "content": bot_message})
+            st.write("🤖: " + bot_message)
 
-    bot_message = response["choices"][0]["message"]["content"]
-    messages.append({"role": "assistant", "content": bot_message})
-    st.write("🤖: " + bot_message)
+            if "choices" in event and len(event["choices"]) > 0:
+                break
 
     st.session_state["user_input"] = ""  # 入力欄を消去
 
