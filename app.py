@@ -24,7 +24,7 @@ def communicate():
     )
 
     while not response["choices"]:
-        response = openai.ChatCompletion.fetch(model="gpt-3.5-turbo", response["id"])
+        response = openai.ChatCompletion.fetch(response["id"], model="gpt-3.5-turbo")
 
     bot_message = response["choices"][0]["message"]["content"]
     messages.append({"role": "assistant", "content": bot_message})
