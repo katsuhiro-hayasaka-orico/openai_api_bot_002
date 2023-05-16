@@ -24,8 +24,16 @@ def communicate():
         stream=True
     )  
 
-    bot_message = response["choices"][0]["message"]
-    messages.append(bot_message)
+# 返答を受け取り、逐次yield
+    response_text = "" 
+    for chunk in response:
+        if chunk:
+            content = chunk['choices'][0]['delta'].get('content')
+            if content:
+                response_text += content
+                yield content
+    else:  #
+        messages += [{'role': 'assistant', 'content': response_text}]
 
     st.session_state["user_input"] = ""  # 入力欄を消去
 
